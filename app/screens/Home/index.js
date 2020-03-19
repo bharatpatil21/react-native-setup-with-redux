@@ -6,6 +6,8 @@ import styles from './styles';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from 'react-native-camera';
+import * as homeActions from 'app/actions/homeActions';
+
 
 class Home extends Component {
 
@@ -25,7 +27,6 @@ class Home extends Component {
   }
 
   async chooseFile() {
-    console.log('choose');
     let source;
     var options = {
       title: 'Select Image',
@@ -39,7 +40,7 @@ class Home extends Component {
     };
 
     ImagePicker.showImagePicker(options, response => {
-      this.setState({ fileUploaded: false });;
+      this.setState({ fileUploaded: false });
       if (response.didCancel) {
         console.log('User cancelled image picker');
       } else if (response.error) {
@@ -51,7 +52,7 @@ class Home extends Component {
         source = response.data;
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-        console.log('response Upload function------------', JSON.stringify(response));
+       
         this.setState({
           filePath: response,
           confirmation: 'Extracting data',
