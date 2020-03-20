@@ -6,23 +6,21 @@ import styles from './styles';
 import { connect } from 'react-redux';
 import ImagePicker from 'react-native-image-picker';
 import { RNCamera } from 'react-native-camera';
-import * as homeActions from 'app/actions/homeActions';
-
+import { uploadInvoiceImage } from '../../actions/homeActions';
 
 class Home extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       filePath: {},
-      confirmation : "",
-      isLoading : "",
-      Invoice : "",
-      Amount : "",
-      Provider: "",
-      Vendor : "",
-      Description : "",
-      fileUploaded : false
+      confirmation: '',
+      isLoading: '',
+      Invoice: '',
+      Amount: '',
+      Provider: '',
+      Vendor: '',
+      Description: '',
+      fileUploaded: false
     };
   }
 
@@ -52,14 +50,25 @@ class Home extends Component {
         source = response.data;
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-       
+
         this.setState({
           filePath: response,
           confirmation: 'Extracting data',
         });
       }
 
-     // this.uploadImage(source);
+      const UID= Math.round(1+ Math.random() * (1000000-1));
+     
+
+      var date={
+          fileExt:"png",
+          imageID: UID,
+          folder:UID,
+          img : 'data:image/png;base64,' + source 
+      };
+
+      this.props.uploadInvoiceImage(date);
+      // this.uploadImage(source);
     });
   }
 
@@ -106,4 +115,12 @@ class Home extends Component {
   }
 }
 
-export default connect()(Home);
+const mapStateToProps = ({ homeReducer }) => {
+  return {
+    ocrInfo: homeReducer.ocrInfo,
+    ocrInfoLoading: homeReducer.ocrInfoLoading
+  };
+};
+
+export default connect(mapStateToProps,
+  {uploadInvoiceImage})(Home);
