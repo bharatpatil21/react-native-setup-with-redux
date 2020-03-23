@@ -20,7 +20,7 @@ export const homeReducer = createReducer(initialState, {
   },
   [types.GET_OCR_INFO_SUCCESS](state, action) {
     return { ...state,
-            ocrInfo: action.payload, 
+            ocrInfo: action.ocrInfo, 
             ocrInfoLoading: false 
     };
   },

@@ -1,8 +1,10 @@
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 
-import Login from 'app/screens/Login';
-import Home from 'app/screens/Home';
+import Login from '../screens/Login';
+import Home from '../screens/Home';
+import Ocr from '../screens/Ocr';
+ 
 
 const RNApp = createStackNavigator(
   {
@@ -11,6 +13,9 @@ const RNApp = createStackNavigator(
     },
     Home: {
       screen: Home,
+    },
+    Ocr: {
+      screen: Ocr,
     },
   },
   { headerMode: 'none' },

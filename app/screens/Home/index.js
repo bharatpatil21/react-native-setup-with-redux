@@ -61,6 +61,7 @@ class Home extends Component {
 
       this.props.uploadInvoiceImage(source);
       // this.uploadImage(source);
+      this.props.navigation.navigate('Ocr');
     });
   }
 

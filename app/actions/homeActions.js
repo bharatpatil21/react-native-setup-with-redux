@@ -23,7 +23,6 @@ export const uploadInvoiceImage = source => dispatch => {
       },
     )
     .then(response => {
-      // console.log("response", response)
       dispatch(getOcrData(UID));
     })
     .catch(error => {
