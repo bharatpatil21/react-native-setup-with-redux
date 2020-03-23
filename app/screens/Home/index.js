@@ -20,7 +20,7 @@ class Home extends Component {
       Provider: '',
       Vendor: '',
       Description: '',
-      fileUploaded: false
+      fileUploaded: false,
     };
   }
 
@@ -57,17 +57,9 @@ class Home extends Component {
         });
       }
 
-      const UID= Math.round(1+ Math.random() * (1000000-1));
      
 
-      var date={
-          fileExt:"png",
-          imageID: UID,
-          folder:UID,
-          img : 'data:image/png;base64,' + source 
-      };
-
-      this.props.uploadInvoiceImage(date);
+      this.props.uploadInvoiceImage(source);
       // this.uploadImage(source);
     });
   }
@@ -118,9 +110,11 @@ class Home extends Component {
 const mapStateToProps = ({ homeReducer }) => {
   return {
     ocrInfo: homeReducer.ocrInfo,
-    ocrInfoLoading: homeReducer.ocrInfoLoading
+    ocrInfoLoading: homeReducer.ocrInfoLoading,
   };
 };
 
-export default connect(mapStateToProps,
-  {uploadInvoiceImage})(Home);
+export default connect(
+  mapStateToProps,
+  { uploadInvoiceImage },
+)(Home);
