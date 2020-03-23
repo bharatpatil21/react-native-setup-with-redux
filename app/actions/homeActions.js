@@ -14,7 +14,7 @@ export const uploadInvoiceImage = source => dispatch => {
   dispatch({ type: types.GET_OCR_INFO });
   axios
     .post(
-      'https://8vlgj1j9f0.execute-api.us-west-1.amazonaws.com/Production',
+      `${ApiConstants.BASE_URL}/Production`,
       JSON.stringify(data),
       {
         headers: {
@@ -35,7 +35,7 @@ export const getOcrData = UID => dispatch => {
   let targetImage = UID + '.png';
   axios
     .post(
-      'https://8vlgj1j9f0.execute-api.us-west-1.amazonaws.com/Production/ocr',
+      `${ApiConstants.BASE_URL}/Production/ocr`,
       JSON.stringify(targetImage),
       {
         headers: {
@@ -44,7 +44,6 @@ export const getOcrData = UID => dispatch => {
       },
     )
     .then(response => {
-      console.log("response.body[0]",response.data.body[0])
       dispatch({ type: types.GET_OCR_INFO_SUCCESS, ocrInfo : response.data.body[0] });
     })
     .catch(error => {
