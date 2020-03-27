@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
 import React, { Component } from 'react';
-import { View, Text, TouchableOpacity } from 'react-native';
+import { View, Text, TouchableOpacity, Button, Image } from 'react-native';
 import { Icon } from 'native-base';
 import styles from './styles';
 import { connect } from 'react-redux';
@@ -57,50 +57,104 @@ class Home extends Component {
         });
       }
 
-     
-
       this.props.uploadInvoiceImage(source);
       // this.uploadImage(source);
       this.props.navigation.navigate('Ocr');
     });
   }
 
+  takePicture = async() => {
+    if (this.camera) {
+      const options = { quality: 0.5, base64: true };
+      const data = await this.camera.takePictureAsync(options);
+      console.log(data.uri);
+      this.setState({
+        filePath: data.uri,
+      });
+
+      this.props.uploadInvoiceImage(data.base64);
+      this.props.navigation.navigate('Ocr');
+    }
+  };
+
   render() {
     return (
+      // <View style={styles.container}>
+      //   <View style={styles.uploadHeader}>
+      //     <Icon
+      //       style={styles.uploadHeaderIcon}
+      //       type="FontAwesome"
+      //       name="file-image-o"
+      //     />
+      //     <Text style={styles.uploadHeaderText}>You need to Upload your</Text>
+      //     <Text style={styles.uploadHeaderSubText}>Electricity Bill</Text>
+      //   </View>
+      //   <View style={styles.cameraBlock}>
+      //     <Icon style={styles.cameraButton} type="FontAwesome" name="camera">
+      //       {' '}
+      //       <Text>Use Camera</Text>
+      //     </Icon>
+      //   </View>
+      // <View style={styles.selectDocument}>
+      //   <Text style={styles.orText}>-------------- or --------------</Text>
+      //   <View style={styles.selectDocumentBtn}>
+      //     <Icon
+      //       style={styles.selectDocumentBtnIcon}
+      //       type="FontAwesome"
+      //       name="file-image-o"
+      //     />
+      //     <TouchableOpacity onPress={this.chooseFile.bind(this)}>
+      //       <View>
+      //         <Text style={styles.selectDocumentBtnText}>
+      //           Select the document from Gallery
+      //         </Text>
+      //         <Text style={styles.selectDocumentBtnSubText}>
+      //           (Only select PNG files)
+      //         </Text>
+      //       </View>
+      //     </TouchableOpacity>
+      //   </View>
+      //   </View>
+      // </View>
       <View style={styles.container}>
-        <View style={styles.uploadHeader}>
-          <Icon
-            style={styles.uploadHeaderIcon}
-            type="FontAwesome"
-            name="file-image-o"
-          />
-          <Text style={styles.uploadHeaderText}>You need to Upload your</Text>
-          <Text style={styles.uploadHeaderSubText}>Electricity Bill</Text>
-        </View>
-        <View style={styles.cameraBlock}>
-          <Icon style={styles.cameraButton} type="FontAwesome" name="camera">
-            {' '}
-            <Text>Use Camera</Text>
-          </Icon>
-        </View>
-        <View style={styles.selectDocument}>
-          <Text style={styles.orText}>-------------- or --------------</Text>
-          <View style={styles.selectDocumentBtn}>
-            <Icon
-              style={styles.selectDocumentBtnIcon}
-              type="FontAwesome"
-              name="file-image-o"
+        <View>
+          <View style={styles.cameraContainer}>
+            <RNCamera
+              ref={ref => {
+                this.camera = ref;
+              }}
+              style={styles.preview}
             />
-            <TouchableOpacity onPress={this.chooseFile.bind(this)}>
-              <View>
-                <Text style={styles.selectDocumentBtnText}>
-                  Select the document from Gallery
-                </Text>
-                <Text style={styles.selectDocumentBtnSubText}>
-                  (Only select PNG files)
-                </Text>
-              </View>
-            </TouchableOpacity>
+            <View style={styles.cameraBlock}>
+              <TouchableOpacity onPress={this.takePicture.bind(this)}>
+                <Icon
+                  style={styles.cameraButton}
+                  type="FontAwesome"
+                  name="camera">
+                  <Text>Use Camera</Text>
+                </Icon>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.selectDocument}>
+            <Text style={styles.orText}>-------------- or --------------</Text>
+            <View style={styles.selectDocumentBtn}>
+              <Icon
+                style={styles.selectDocumentBtnIcon}
+                type="FontAwesome"
+                name="file-image-o"
+              />
+              <TouchableOpacity onPress={this.chooseFile.bind(this)}>
+                <View>
+                  <Text style={styles.selectDocumentBtnText}>
+                    Select the document from Gallery
+                  </Text>
+                  <Text style={styles.selectDocumentBtnSubText}>
+                    (Only select PNG files)
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -115,7 +169,4 @@ const mapStateToProps = ({ homeReducer }) => {
   };
 };
 
-export default connect(
-  mapStateToProps,
-  { uploadInvoiceImage },
-)(Home);
+export default connect(mapStateToProps, { uploadInvoiceImage })(Home);
